@@ -1,0 +1,13 @@
+/.lake/
+/build/
+
+*.olean
+*.ilean
+*.trace
+*.log
+*.tmp
+
+.DS_Store
+.vscode/
+.idea/
+*~

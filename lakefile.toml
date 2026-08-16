@@ -1,0 +1,11 @@
+name = "RB31EndToEnd"
+version = "1.0.0"
+defaultTargets = ["RB31EndToEnd"]
+
+[[require]]
+name = "mathlib"
+git = "https://github.com/leanprover-community/mathlib4.git"
+rev = "8a178386ffc0f5fef0b77738bb5449d50efeea95"
+
+[[lean_lib]]
+name = "RB31EndToEnd"
