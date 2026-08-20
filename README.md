@@ -42,9 +42,63 @@ flag semismallness theorem, the prime-height argument for the null-difference
 ideals, and the exclusion of exceptional pin parameters. None of these results
 is supplied as an assumption to the root theorem.
 
-The repository contains exactly the transitive source dependency closure of the
-end-to-end theorem, together with a small trust audit. Experimental files and
-historical proof routes are not part of this release.
+The proof engine contains the transitive source dependency closure of the
+end-to-end theorem; the repository also includes public facade modules,
+consumer checks, dependency tooling, architecture notes, and the trust audit.
+Historical proof routes are not part of this release.
+
+## Use as a Lean library
+
+New consumers should import the smallest supported facade instead of the
+end-to-end root.  For example, body--pin incidence, capacities, ordinary
+finite partitions, and expanded graphs are available through:
+
+```lean
+import RB31EndToEnd.API.BodyPin
+```
+
+Twist and body/bar bridge semantics are separate:
+
+```lean
+import RB31EndToEnd.API.BodyTwist
+```
+
+The light aggregate imports all reusable facades but deliberately excludes the
+closed capstone proof:
+
+```lean
+import RB31EndToEnd.API
+```
+
+Import the theorem explicitly when it is actually needed:
+
+```lean
+import RB31EndToEnd.API.Theorem
+
+example (H : RB31E2E.BodyPinIncidence) (extra : H.Body → ℕ) :
+    H.GenericallyRigidInR3 extra ↔ H.PartitionCondition :=
+  H.genericallyRigidInR3_iff_partitionCondition extra
+```
+
+The legacy `import RB31EndToEnd` entry point and
+`RB31E2E.endToEndBodyPinStatement` remain supported.  They load the full proof
+engine and are intended for compatibility and trust auditing, not as the
+prelude for new Whiteley/Dress work.
+
+For a sibling development checkout, add a convenient local path dependency:
+
+```toml
+[[require]]
+name = "RB31EndToEnd"
+path = "../Kiraly-Tanigawa-Rigidity-Library"
+```
+
+A path dependency follows the sibling checkout and is not immutable.
+
+For a remote dependency, replace `path` by this repository's `git` URL and pin
+`rev` to an exact server-verified commit or release tag.  The public API
+contract is documented in
+[`docs/architecture/public-api.md`](docs/architecture/public-api.md).
 
 ## Requirements
 
@@ -100,6 +154,11 @@ declarations used by the proof are checked by the Lean kernel.
 
 - `RB31EndToEnd.lean` states the unconditional root theorem.
 - `RB31EndToEnd/` contains the proof modules.
+- `RB31EndToEnd/API.lean` is the lightweight reusable prelude.
+- `RB31EndToEnd/API/` contains the granular supported facades and the explicit
+  theorem facade.
+- `docs/architecture/` records the public contract and deterministic import
+  graph.
 - `Tests/Trust.lean` records the root type and its axiom dependencies.
 - `scripts/` contains setup, build, source-scan, and audit commands.
 - `SOURCE_MANIFEST.sha256` records the released source files.

@@ -29,6 +29,7 @@ trap 'rm -f "$temporary"' EXIT
 while IFS= read -r file; do
   hash_file "$file" | sed 's|  \./|  |'
 done < <(find . -type f \
+  ! -path './.git' \
   ! -path './.git/*' \
   ! -path './.lake/*' \
   ! -name "$manifest" \

@@ -6,5 +6,9 @@ cd "$repo_root"
 
 ./scripts/source-manifest.sh --check
 ./scripts/trust-scan.sh
+./scripts/module-deps.sh --check
+./scripts/api-layer-check.sh --self-test
+./scripts/api-layer-check.sh
 ./scripts/build.sh
+./scripts/api-audit.sh
 ./scripts/audit.sh
