@@ -35,6 +35,9 @@ The Lean theorem is the maximum-rank formulation of generic infinitesimal
 rigidity. No generic configuration is chosen in the statement: generic rank is
 defined as the maximum rank attained by the real rigidity matrix.
 
+The classical Asimow--Roth passage to generic rigidity in the usual geometric
+sense is not included in the current formalization.
+
 ## Scope of the formalization
 
 Both implications are proved. The sufficiency proof includes the collinearity-
@@ -43,9 +46,10 @@ primes of the rational selected null-difference ideals that survive a complete
 pairwise-distinctness chart, and the exclusion of exceptional pin parameters.
 None of these results is supplied as an assumption to the root theorem.
 
-The repository contains exactly the transitive source dependency closure of the
+The core library contains the transitive source dependency closure of the
 end-to-end theorem, together with a small trust audit. Experimental files and
-historical proof routes are not part of this release.
+historical proof routes are not part of this release. `RB31Interop` is a
+separate, theorem-independent compatibility target.
 
 ## Requirements
 
@@ -67,7 +71,8 @@ The checked-in toolchain and manifest pin the environment to:
 
 The first command downloads the pinned dependencies and the matching mathlib
 cache. The second checks the source manifest, scans the production sources,
-builds the complete theorem with warnings treated as errors, and checks the
+builds the complete theorem and interoperability target with warnings treated
+as errors, builds the Comparator statement and solution modules, and checks the
 type and axiom dependencies of the closed root theorem. The scripts may be run
 from any working directory.
 
@@ -84,13 +89,53 @@ manifest of the source-only release.
 
 GitHub Actions runs the same build and audit on every push and pull request.
 
+## Interoperability
+
+`RB31Interop` exports the occurrence-indexed body multigraph as mathlib's
+`Graph H.Body H.Pin`, the interface used by
+[CombinatorialRigidity](https://github.com/bryangingechen/CombinatorialRigidity)
+for body-level multigraphs. All bodies and pin occurrences remain present, and
+parallel pins remain distinct. The expanded bar--joint graph is already a
+mathlib `SimpleGraph`, so no conversion is required at that layer.
+
+The exact interface and the current toolchain boundary are documented in
+[`docs/INTEROPERABILITY.md`](docs/INTEROPERABILITY.md).
+
+## Comparator surface
+
+`Challenge.lean`, `Solution.lean`, and `comparator.json` provide the independent
+statement/solution layout expected by
+[leanprover/comparator](https://github.com/leanprover/comparator). The challenge
+imports only Mathlib and contains the complete mathematical statement surface;
+the solution supplies the proof from the production development. Comparator is
+configured to permit exactly `propext`, `Quot.sound`, and `Classical.choice`.
+
+With Comparator, a Lean-4.29-compatible `lean4export`, and Landrun installed,
+run the separate declaration comparison on Linux:
+
+```bash
+./scripts/compare.sh /absolute/path/to/comparator
+```
+
+The statement comparison and default-kernel recheck were tested with Comparator
+commit `2312244ac716564a61cc0bf4e107d9abf1757a61` and `lean4export` commit
+`5a53b634f6a3e21e55b4852337c4fcf0781ad1aa` (tag `v4.29.0`). The server test
+used Comparator's development runner; independent security review should use
+the sandbox setup described in the upstream instructions. `verify.sh` builds
+both modules but does not install or run Comparator.
+
+[`formalization.yaml`](formalization.yaml) supplies the project metadata,
+statement alignment, and declared verification scope for registry review.
+
 ## Trust boundary
 
-The project adds no mathematical axioms. It does not use `sorry`, `admit`, an
-explicit `opaque` declaration, or an external oracle in place of a load-bearing
-proof. The structure fields for collinearity-flag states and function-field
-branches do not contain the semismallness or height conclusions that they are
-used to prove.
+The production development adds no mathematical axioms. It does not use
+`sorry`, `admit`, an explicit `opaque` declaration, or an external oracle in
+place of a load-bearing proof. The structure fields for collinearity-flag
+states and function-field branches do not contain the semismallness or height
+conclusions that they are used to prove. `Challenge.lean` contains the single
+deliberate placeholder in the Comparator challenge; it is not imported by the
+proof library or by `Solution.lean`.
 
 The closed root theorem depends exactly on `propext`, `Classical.choice`, and
 `Quot.sound`. These are Lean's principles of propositional extensionality,
@@ -101,8 +146,16 @@ declarations used by the proof are checked by the Lean kernel.
 
 - `RB31EndToEnd.lean` states the unconditional root theorem.
 - `RB31EndToEnd/` contains the proof modules.
+- `RB31Interop.lean` is the optional mathlib `Graph` compatibility entry point.
+- `Challenge.lean`, `Solution.lean`, and `comparator.json` define the Comparator
+  statement/proof boundary.
 - `Tests/Trust.lean` records the root type and its axiom dependencies.
 - `scripts/` contains setup, build, source-scan, and audit commands.
 - `SOURCE_MANIFEST.sha256` records the released source files.
 - `.github/workflows/lean.yml` provides continuous verification.
 - `CITATION.cff` supplies citation metadata for the formalization.
+
+## License
+
+Copyright 2026 Dongzhe (Denzel) Zheng. Licensed under the
+[Apache License, Version 2.0](LICENSE).

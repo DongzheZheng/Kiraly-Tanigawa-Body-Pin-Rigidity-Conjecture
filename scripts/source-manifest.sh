@@ -31,6 +31,16 @@ while IFS= read -r file; do
 done < <(find . -type f \
   ! -path './.git/*' \
   ! -path './.lake/*' \
+  ! -path './build/*' \
+  ! -path './.vscode/*' \
+  ! -path './.idea/*' \
+  ! -name '.DS_Store' \
+  ! -name '*.olean' \
+  ! -name '*.ilean' \
+  ! -name '*.trace' \
+  ! -name '*.log' \
+  ! -name '*.tmp' \
+  ! -name '*~' \
   ! -name "$manifest" \
   | LC_ALL=C sort) > "$temporary"
 

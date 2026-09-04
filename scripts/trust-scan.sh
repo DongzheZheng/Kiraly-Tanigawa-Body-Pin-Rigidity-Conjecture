@@ -10,7 +10,7 @@ mapfile_compat() {
   done
 }
 
-source_files=("RB31EndToEnd.lean")
+source_files=("RB31EndToEnd.lean" "RB31Interop.lean" "Solution.lean")
 mapfile_compat < <(find RB31EndToEnd -type f -name '*.lean' -print | LC_ALL=C sort)
 
 declaration_pattern='^[[:space:]]*(axiom|opaque|unsafe|extern|partial[[:space:]]+def)([[:space:](]|$)'

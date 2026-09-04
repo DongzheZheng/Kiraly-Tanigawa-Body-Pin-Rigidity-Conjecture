@@ -1,0 +1,6 @@
+{
+  "challenge_module": "Challenge",
+  "solution_module": "Solution",
+  "theorem_names": ["RB31E2E.endToEndBodyPinStatement"],
+  "permitted_axioms": ["propext", "Quot.sound", "Classical.choice"]
+}

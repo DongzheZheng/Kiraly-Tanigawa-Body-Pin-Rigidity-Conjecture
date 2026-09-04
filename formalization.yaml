@@ -1,0 +1,139 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/main/schema/formalization.schema.json
+
+version: "v0.4"
+
+project:
+  name: "Király–Tanigawa three-dimensional body–pin rigidity"
+  description: >-
+    An end-to-end Lean 4 proof of the maximum-rank form of the
+    Király–Tanigawa partition criterion for real three-dimensional body–pin
+    rigidity. For every finite loopless occurrence-indexed body–pin
+    multigraph and every permitted number of private body vertices, the
+    formalization proves that the partition inequalities are equivalent to
+    maximum attainable rigidity-matrix rank for the expanded bar–joint graph.
+    The proof includes the sparse-support construction, collinearity-flag
+    semismallness, and the ideal-height estimates used in the sufficiency
+    direction.
+  authors:
+    - "Dongzhe (Denzel) Zheng"
+  responsible_maintainers:
+    - "Dongzhe (Denzel) Zheng"
+  license: "Apache-2.0"
+
+sources:
+  - title: "Stress Degeneracy of Direction Complexes of (2,2)-Sparse Graphs and Three-Dimensional Body-Pin Rigidity"
+    authors:
+      - "Dongzhe (Denzel) Zheng"
+    id: "https://doi.org/10.13140/RG.2.2.17830.28485"
+    type: "paper"
+    location: "Theorem A.1 and its proof"
+    relationship: "formalizes"
+    author_endorsement: "participated"
+
+related_formalizations:
+  - id: "https://github.com/bryangingechen/CombinatorialRigidity"
+    relationship: "other"
+    note: >-
+      A related Lean development of combinatorial rigidity, including
+      body–bar rigidity. The interoperability target in this repository
+      exports the occurrence-indexed body multigraph through mathlib's Graph
+      interface; the expanded bar–joint graph remains a SimpleGraph.
+
+classification:
+  arxiv:
+    - "math.CO"
+  msc2020:
+    - "52C25"
+    - "05C50"
+
+status:
+  scope: >-
+    The compared root theorem is manuscript Theorem A.1 in maximum-rank form.
+    Both implications are proved uniformly for every finite loopless
+    body–pin incidence structure and every additional-private-vertex
+    function; parallel pins and the empty and one-body cases are included.
+    No theorem used in the proof is introduced as a project-specific axiom or
+    as a literature hypothesis. The classical Asimow–Roth passage from
+    attained maximum rank to generic rigidity in the usual geometric sense,
+    as stated in manuscript Theorem 1.1, is outside the present formal
+    dependency closure.
+    Challenge.lean contains one deliberate Comparator placeholder, which is
+    excluded from the proof-development sorry counts below.
+  sorry_count: 0
+  sorry_in_definitions: 0
+  axioms:
+    - "propext"
+    - "Classical.choice"
+    - "Quot.sound"
+  main_results:
+    - declaration: "RB31E2E.endToEndBodyPinStatement"
+      file: "RB31EndToEnd.lean"
+      sorry_count: 0
+      axioms:
+        - "propext"
+        - "Classical.choice"
+        - "Quot.sound"
+      comparator_config: "comparator.json"
+      literature_dependencies: []
+
+automation:
+  methods:
+    - method: "manual"
+      tool_setup: >-
+        Mathematical design, source selection, theorem statement, proof
+        decisions, and final review by the author.
+    - method: "agent"
+      models:
+        - "GPT-5.6 Sol"
+      framework: "OpenAI Codex"
+      tool_setup: >-
+        Author-directed assistance with proof organization and detailed
+        checking, Lean formalization and verification, and proofreading.
+  notes: >-
+    The reported builds and axiom audits use the repository's pinned Lean and
+    Mathlib environment and reproducibility scripts.
+
+fidelity:
+  divergences: >-
+    The formal root is the maximum-rank statement of manuscript Theorem A.1.
+    Maximum rank is defined by taking the greatest rank attained by a real
+    rigidity matrix, so no generic placement is selected in the Lean
+    statement. The classical Asimow–Roth bridge to generic rigidity in the
+    usual geometric sense, as stated in manuscript Theorem 1.1, has not been
+    formalized. The occurrence-indexed body graph is a finite loopless
+    multigraph, while its
+    expanded bar–joint graph and the sparse support are simple graphs, matching
+    their respective mathematical roles.
+
+review:
+  status: "agent-reviewed"
+  reviewers:
+    - "OpenAI Codex (GPT-5.6 Sol)"
+  notes: >-
+    Author-directed review covered the statement surface, source dependency
+    closure, forbidden placeholders, and the root theorem's axiom closure.
+    The proof and audit scripts were run in the pinned environment on a remote
+    server. No independent human peer review or Palomar review is claimed.
+
+alignment:
+  namespace: "RB31E2E"
+  statements:
+    - source: "Theorem A.1 (maximum-rank body–pin partition theorem)"
+      lean: "RB31E2E.endToEndBodyPinStatement"
+      module: "RB31EndToEnd"
+      status: "proved"
+      note: >-
+        This is the closed, zero-parameter root theorem compared by
+        comparator.json. It proves both implications for every input covered
+        by the source statement.
+    - source: "Theorem 1.1 (generic rigidity in the usual geometric sense)"
+      status: "not-formalized"
+      note: >-
+        The maximum-rank content is supplied by Theorem A.1 above. The
+        classical Asimow–Roth bridge to this usual geometric formulation is
+        not part of the current formal dependency closure.
+
+acknowledgements: >-
+  Built with Lean 4 and Mathlib. OpenAI Codex (GPT-5.6 Sol) assisted with
+  document organization and typesetting, refinement of proof details, the
+  Lean formalization and its verification, and proofreading.

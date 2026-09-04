@@ -7,4 +7,5 @@ cd "$repo_root"
 ./scripts/source-manifest.sh --check
 ./scripts/trust-scan.sh
 ./scripts/build.sh
+lake build Challenge Solution
 ./scripts/audit.sh
