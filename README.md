@@ -1,8 +1,8 @@
 # Three-dimensional body--pin rigidity
 
 This repository contains a Lean 4 formalization of the partition
-characterization of generic infinitesimal rigidity for three-dimensional
-body--pin frameworks.
+characterization of generic rigidity for three-dimensional body--pin
+frameworks, in maximum-rank, Euclidean local-rigidity, and continuous-rigidity forms.
 
 ## The theorem
 
@@ -31,12 +31,22 @@ where the sum ranges over unordered pairs of distinct blocks and `m_ij` is the
 number of pins joining blocks `i` and `j`. Parallel pins, the empty body set,
 and the one-body case are included in the statement.
 
-The Lean theorem is the maximum-rank formulation of generic infinitesimal
-rigidity. No generic configuration is chosen in the statement: generic rank is
-defined as the maximum rank attained by the real rigidity matrix.
+The maximum-rank root defines generic rank as the maximum attained by the real
+rigidity matrix. A second closed root proves the equivalent geometric
+statement: an open dense set of native Euclidean placements of `G(H,r)` is
+locally rigid if and only if the partition condition holds. Here local rigidity
+means that every sufficiently close placement with the same edge lengths has
+the same distances between all vertex pairs.
 
-The classical Asimow--Roth passage to generic rigidity in the usual geometric
-sense is not included in the current formalization.
+The Asimow--Roth bridge is proved in the library, using the squared-length map,
+the implicit function theorem, and openness and density of the regular locus.
+It is not supplied as an axiom or an external hypothesis. A third closed root
+proves the partition criterion equivalent to continuous rigidity on an open
+dense set of Euclidean placements. Continuous rigidity quantifies over every
+continuous edge-length-preserving motion and requires congruence at every
+time; the motion need not be differentiable. See
+[`docs/GEOMETRIC_RIGIDITY.md`](docs/GEOMETRIC_RIGIDITY.md) for the definitions,
+proof, and precise scope.
 
 ## Scope of the formalization
 
@@ -46,8 +56,8 @@ primes of the rational selected null-difference ideals that survive a complete
 pairwise-distinctness chart, and the exclusion of exceptional pin parameters.
 None of these results is supplied as an assumption to the root theorem.
 
-The core library contains the transitive source dependency closure of the
-end-to-end theorem, together with a small trust audit. Experimental files and
+The core library contains the end-to-end proof and the geometric bridge,
+together with their trust and statement-alignment tests. Experimental files and
 historical proof routes are not part of this release. `RB31Interop` is a
 separate, theorem-independent compatibility target.
 
@@ -71,9 +81,10 @@ The checked-in toolchain and manifest pin the environment to:
 
 The first command downloads the pinned dependencies and the matching mathlib
 cache. The second checks the source manifest, scans the production sources,
-builds the complete theorem and interoperability target with warnings treated
+builds the maximum-rank, geometric, and interoperability targets with warnings treated
 as errors, builds the Comparator statement and solution modules, and checks the
-type and axiom dependencies of the closed root theorem. The scripts may be run
+types and axiom dependencies of the closed root theorems. It also checks the
+fully expanded Euclidean statement and small-framework cases. The scripts may be run
 from any working directory.
 
 Individual stages are also available:
@@ -113,6 +124,8 @@ statement/solution layout expected by
 imports only Mathlib and contains the complete mathematical statement surface;
 the solution supplies the proof from the production development. Comparator is
 configured to permit exactly `propext`, `Quot.sound`, and `Classical.choice`.
+This comparison covers the maximum-rank root. The new geometric roots are
+kernel-checked and audited, but have no separate Comparator challenges.
 
 With Comparator, a Lean-4.29-compatible `lean4export`, and Landrun installed,
 run the separate declaration comparison on Linux:
@@ -141,19 +154,24 @@ conclusions that they are used to prove. `Challenge.lean` contains the single
 deliberate placeholder in the Comparator challenge; it is not imported by the
 proof library or by `Solution.lean`.
 
-The closed root theorem depends exactly on `propext`, `Classical.choice`, and
+All three closed root theorems depend exactly on `propext`, `Classical.choice`, and
 `Quot.sound`. These are Lean's principles of propositional extensionality,
 classical choice, and compatibility of quotient types. All project and mathlib
 declarations used by the proof are checked by the Lean kernel.
 
 ## Repository layout
 
-- `RB31EndToEnd.lean` states the unconditional root theorem.
+- `RB31EndToEnd.lean` states the unconditional maximum-rank root theorem.
+- `RB31Geometric.lean` states the unconditional Euclidean local-rigidity and
+  continuous-rigidity root theorems.
 - `RB31EndToEnd/` contains the proof modules.
 - `RB31Interop.lean` is the optional mathlib `Graph` compatibility entry point.
 - `Challenge.lean`, `Solution.lean`, and `comparator.json` define the Comparator
   statement/proof boundary.
-- `Tests/Trust.lean` records the root type and its axiom dependencies.
+- `Tests/Trust.lean` and `Tests/GeometricTrust.lean` audit the root types and
+  their axiom dependencies.
+- `Tests/GeometricSemantics.lean` checks the expanded Euclidean conclusion and
+  empty, singleton, and zero-dimensional cases.
 - `scripts/` contains setup, build, source-scan, and audit commands.
 - `SOURCE_MANIFEST.sha256` records the released source files.
 - `.github/workflows/lean.yml` provides continuous verification.

@@ -1,0 +1,14 @@
+import RB31Geometric
+
+#check RB31E2E.endToEndGeometricBodyPinStatement
+#print axioms RB31E2E.endToEndGeometricBodyPinStatement
+#check RB31E2E.endToEndContinuousBodyPinStatement
+#print axioms RB31E2E.endToEndContinuousBodyPinStatement
+#check RB31E2E.bodyPin_isLocallyRigid_iff_partition_of_isGenericPlacement
+#print axioms RB31E2E.bodyPin_isLocallyRigid_iff_partition_of_isGenericPlacement
+#check RB31E2E.BarJoint.isGenericallyLocallyRigid_iff_isGenericallyRigid
+#print axioms RB31E2E.BarJoint.isGenericallyLocallyRigid_iff_isGenericallyRigid
+#check RB31E2E.ker_fderiv_le_of_eventually_level_imp
+#print axioms RB31E2E.ker_fderiv_le_of_eventually_level_imp
+#check RB31E2E.bodyPin_euclideanIsContinuouslyRigid_of_partition_of_regular
+#print axioms RB31E2E.bodyPin_euclideanIsContinuouslyRigid_of_partition_of_regular

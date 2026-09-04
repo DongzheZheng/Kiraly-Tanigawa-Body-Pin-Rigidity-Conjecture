@@ -5,7 +5,8 @@ version: "v0.4"
 project:
   name: "Király–Tanigawa three-dimensional body–pin rigidity"
   description: >-
-    An end-to-end Lean 4 proof of the maximum-rank form of the
+    An end-to-end Lean 4 proof of the maximum-rank, Euclidean local-rigidity,
+    and continuous-rigidity forms of the
     Király–Tanigawa partition criterion for real three-dimensional body–pin
     rigidity. For every finite loopless occurrence-indexed body–pin
     multigraph and every permitted number of private body vertices, the
@@ -13,7 +14,8 @@ project:
     maximum attainable rigidity-matrix rank for the expanded bar–joint graph.
     The proof includes the sparse-support construction, collinearity-flag
     semismallness, and the ideal-height estimates used in the sufficiency
-    direction.
+    direction. A proved Asimow–Roth bridge identifies maximum rank with
+    ordinary local and continuous rigidity on open dense sets of Euclidean placements.
   authors:
     - "Dongzhe (Denzel) Zheng"
   responsible_maintainers:
@@ -26,7 +28,7 @@ sources:
       - "Dongzhe (Denzel) Zheng"
     id: "https://doi.org/10.13140/RG.2.2.17830.28485"
     type: "paper"
-    location: "Theorem A.1 and its proof"
+    location: "Theorems A.1 and 1.1, in maximum-rank and generic Euclidean rigidity form"
     relationship: "formalizes"
     author_endorsement: "participated"
 
@@ -56,10 +58,13 @@ status:
     body–pin incidence structure and every additional-private-vertex
     function; parallel pins and the empty and one-body cases are included.
     No theorem used in the proof is introduced as a project-specific axiom or
-    as a literature hypothesis. The classical Asimow–Roth passage from
-    attained maximum rank to generic rigidity in the usual geometric sense,
-    as stated in manuscript Theorem 1.1, is outside the present formal
-    dependency closure.
+    as a literature hypothesis. A second closed root proves the partition
+    criterion equivalent to local rigidity on an open dense set of native
+    Euclidean placements. The Asimow–Roth bridge, including the analytic
+    regular-fibre argument and open dense regular locus, is proved in the
+    development. A third closed root states the equivalent generic continuous-
+    rigidity property, quantifying over every continuous motion and every time.
+    The geometric roots have no independent Comparator challenges.
     Challenge.lean contains one deliberate Comparator placeholder, which is
     excluded from the proof-development sorry counts below.
   sorry_count: 0
@@ -77,6 +82,22 @@ status:
         - "Classical.choice"
         - "Quot.sound"
       comparator_config: "comparator.json"
+      literature_dependencies: []
+    - declaration: "RB31E2E.endToEndGeometricBodyPinStatement"
+      file: "RB31Geometric.lean"
+      sorry_count: 0
+      axioms:
+        - "propext"
+        - "Classical.choice"
+        - "Quot.sound"
+      literature_dependencies: []
+    - declaration: "RB31E2E.endToEndContinuousBodyPinStatement"
+      file: "RB31Geometric.lean"
+      sorry_count: 0
+      axioms:
+        - "propext"
+        - "Classical.choice"
+        - "Quot.sound"
       literature_dependencies: []
 
 automation:
@@ -98,13 +119,13 @@ automation:
 
 fidelity:
   divergences: >-
-    The formal root is the maximum-rank statement of manuscript Theorem A.1.
-    Maximum rank is defined by taking the greatest rank attained by a real
-    rigidity matrix, so no generic placement is selected in the Lean
-    statement. The classical Asimow–Roth bridge to generic rigidity in the
-    usual geometric sense, as stated in manuscript Theorem 1.1, has not been
-    formalized. The occurrence-indexed body graph is a finite loopless
-    multigraph, while its
+    The original formal root is the maximum-rank statement of manuscript
+    Theorem A.1. The new geometric roots state the equivalent open-dense local
+    and continuous Euclidean rigidity properties of the actual expanded graph,
+    using edge distances, neighbourhoods, continuous motions, and pairwise congruence. Simultaneously
+    rank-regular placements form a proved open dense nonempty set; no
+    identification with coordinate algebraic independence is claimed.
+    The occurrence-indexed body graph is a finite loopless multigraph, while its
     expanded bar–joint graph and the sparse support are simple graphs, matching
     their respective mathematical roles.
 
@@ -130,11 +151,17 @@ alignment:
         comparator.json. It proves both implications for every input covered
         by the source statement.
     - source: "Theorem 1.1 (generic rigidity in the usual geometric sense)"
-      status: "not-formalized"
+      lean: "RB31E2E.endToEndContinuousBodyPinStatement"
+      module: "RB31Geometric"
+      status: "proved"
       note: >-
-        The maximum-rank content is supplied by Theorem A.1 above. The
-        classical Asimow–Roth bridge to this usual geometric formulation is
-        not part of the current formal dependency closure.
+        The formal statement uses continuous rigidity on an open dense set of
+        native Euclidean placements; a second root gives the equivalent local
+        formulation. The proof derives the Asimow–Roth bridge
+        from the implicit function theorem and the squared-length map,
+        without an external Asimow–Roth hypothesis. Tests/GeometricSemantics.lean
+        checks both expanded Euclidean statements, including the
+        continuous-motion quantifiers.
 
 acknowledgements: >-
   Built with Lean 4 and Mathlib. OpenAI Codex (GPT-5.6 Sol) assisted with

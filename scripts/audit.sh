@@ -15,3 +15,23 @@ grep -Fq \
 grep -Fq '[propext, Classical.choice, Quot.sound]' "$audit_log"
 
 echo "Root theorem type and foundational axiom dependencies verified."
+
+lake env lean -t 0 Tests/GeometricTrust.lean | tee "$audit_log"
+
+grep -Fq \
+  'RB31E2E.endToEndGeometricBodyPinStatement : RB31E2E.EndToEndGeometricBodyPinStatement' \
+  "$audit_log"
+grep -Fq \
+  "'RB31E2E.endToEndGeometricBodyPinStatement' depends on axioms: [propext, Classical.choice, Quot.sound]" \
+  "$audit_log"
+grep -Fq \
+  'RB31E2E.endToEndContinuousBodyPinStatement : RB31E2E.EndToEndContinuousBodyPinStatement' \
+  "$audit_log"
+grep -Fq \
+  "'RB31E2E.endToEndContinuousBodyPinStatement' depends on axioms: [propext, Classical.choice, Quot.sound]" \
+  "$audit_log"
+
+echo "Local and continuous geometric root types and foundational axiom dependencies verified."
+
+lake env lean Tests/GeometricSemantics.lean
+echo "Expanded Euclidean statement and small-framework cases verified."

@@ -1,6 +1,6 @@
 name = "RB31EndToEnd"
-version = "1.2.0"
-defaultTargets = ["RB31EndToEnd", "RB31Interop"]
+version = "1.3.0"
+defaultTargets = ["RB31EndToEnd", "RB31Geometric", "RB31Interop"]
 
 [[require]]
 name = "mathlib"
@@ -12,6 +12,9 @@ name = "RB31EndToEnd"
 
 [[lean_lib]]
 name = "RB31Interop"
+
+[[lean_lib]]
+name = "RB31Geometric"
 
 [[lean_lib]]
 name = "Challenge"
