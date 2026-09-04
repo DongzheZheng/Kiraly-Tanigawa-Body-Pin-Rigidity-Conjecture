@@ -16,3 +16,16 @@ jobs:
           use-mathlib-cache: true
       - name: Verify the complete formalization
         run: ./scripts/verify.sh
+
+  rank-interop:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: leanprover/lean-action@c544e89643240c6b398f14a431bcdc6309e36b3e
+        with:
+          auto-config: false
+          use-mathlib-cache: true
+          use-github-cache: false
+          lake-package-directory: interop/combinatorial-rigidity
+      - name: Verify the cross-project rank theorems
+        run: ./interop/combinatorial-rigidity/verify.sh

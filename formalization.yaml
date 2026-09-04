@@ -38,6 +38,9 @@ related_formalizations:
       body–bar rigidity. The interoperability target in this repository
       exports the occurrence-indexed body multigraph through mathlib's Graph
       interface; the expanded bar–joint graph remains a SimpleGraph.
+      The separate interop/combinatorial-rigidity package proves equality of
+      the two projects' realized and generic rigidity ranks using the same
+      BarJoint source file under the related project's pinned toolchain.
 
 classification:
   arxiv:

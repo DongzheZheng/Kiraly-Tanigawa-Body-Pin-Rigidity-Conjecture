@@ -10,8 +10,11 @@ mapfile_compat() {
   done
 }
 
-source_files=("RB31EndToEnd.lean" "RB31Interop.lean" "Solution.lean")
+source_files=("RB31EndToEnd.lean" "RB31Interop.lean" "Solution.lean"
+  "interop/combinatorial-rigidity/RB31BryanInterop.lean")
 mapfile_compat < <(find RB31EndToEnd -type f -name '*.lean' -print | LC_ALL=C sort)
+mapfile_compat < <(find interop/combinatorial-rigidity/RB31BryanInterop \
+  -type f -name '*.lean' -print | LC_ALL=C sort)
 
 declaration_pattern='^[[:space:]]*(axiom|opaque|unsafe|extern|partial[[:space:]]+def)([[:space:](]|$)'
 term_pattern='(^|[^[:alnum:]_])(sorry|admit|native_decide|implemented_by|run_tac)([^[:alnum:]_]|$)'

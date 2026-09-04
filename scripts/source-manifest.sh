@@ -30,7 +30,7 @@ while IFS= read -r file; do
   hash_file "$file" | sed 's|  \./|  |'
 done < <(find . -type f \
   ! -path './.git/*' \
-  ! -path './.lake/*' \
+  ! -path '*/.lake/*' \
   ! -path './build/*' \
   ! -path './.vscode/*' \
   ! -path './.idea/*' \

@@ -7,10 +7,10 @@ use the same graph-theoretic separation:
 - a body-level multigraph has an independent type of edge occurrences;
 - an expanded bar--joint framework is a mathlib `SimpleGraph`.
 
-The compatibility surface was designed against the public API in
-CombinatorialRigidity commit
-`581c0112c91fddc125f6990ebe04256829839413`. The two packages are not yet
-compiled as a single dependency graph.
+The compatibility surface uses CombinatorialRigidity commit
+`581c0112c91fddc125f6990ebe04256829839413`. The graph adapter is checked in the
+main Lean 4.29 project. The rank comparison is checked in a separate Lean
+4.34.0-rc2 package that imports CombinatorialRigidity directly.
 
 ## Body-level multigraphs
 
@@ -55,13 +55,28 @@ generic rigidity matroid and is proved to equal the same maximum realized rank.
 The concrete operators use different coordinate and row-index types: this
 repository uses functions `Fin d → ℝ` and an ordered-pair codomain, whereas
 CombinatorialRigidity uses `EuclideanSpace ℝ (Fin d)` and the graph's edge
-subtype. A cross-project theorem therefore requires an equal-rank comparison,
-using the coordinate-space equivalence together with restriction and extension
-between the two row-index spaces.
+subtype.
 
-That rank bridge is kept outside the present dependency closure. This release
-uses Lean 4.29.0, while the checked CombinatorialRigidity revision uses Lean
-4.34.0-rc2 and an additional Matroid dependency. A direct package dependency
-would consequently require a coordinated toolchain migration. The conceptual
-separation between the `Graph` and `SimpleGraph` layers is already shared; its
-Lean API must be rechecked as part of that migration.
+The [rank-comparison package](../interop/combinatorial-rigidity/README.md) now
+proves the exact comparison. Its coordinate equivalence `E = frameworkEquiv V d`
+gives, for every placement `p`,
+
+```text
+BarJoint.rigidityRank G p = Module.finrank ℝ (G.RigidityMap (E p)).range
+BarJoint.genericRigidityRank G d = G.genericRank d
+```
+
+The converted operators have identical kernels; rank--nullity proves equality
+of their ranks. Maximum-rank attainment on both sides then proves the generic
+identity. The statements require only `{V : Type} [Fintype V]` and allow every
+`d : ℕ`, including empty vertex sets and zero dimension.
+
+The package compiles the original `BarJoint.lean` source under Lean 4.34.0-rc2.
+Its precise imports avoid the unrelated duplicate `Partition` definitions in
+Mathlib and the Matroid dependency. The full body--pin proof remains checked
+under Lean 4.29; it is not imported into this subproject.
+
+The resulting predicate comparison is with
+`G.genericRank d = (SimpleGraph.completeGraph V).genericRank d`.
+Bryan's separate `IsGenericallyRigid` predicate has different small-vertex
+semantics, so no unrestricted equivalence with that predicate is asserted.

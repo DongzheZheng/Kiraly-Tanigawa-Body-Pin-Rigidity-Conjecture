@@ -1,5 +1,5 @@
 name = "RB31EndToEnd"
-version = "1.1.0"
+version = "1.2.0"
 defaultTargets = ["RB31EndToEnd", "RB31Interop"]
 
 [[require]]

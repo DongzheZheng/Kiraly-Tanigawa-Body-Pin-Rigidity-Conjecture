@@ -98,7 +98,11 @@ for body-level multigraphs. All bodies and pin occurrences remain present, and
 parallel pins remain distinct. The expanded bar--joint graph is already a
 mathlib `SimpleGraph`, so no conversion is required at that layer.
 
-The exact interface and the current toolchain boundary are documented in
+The separate [`rank-comparison package`](interop/combinatorial-rigidity/README.md)
+proves equality of the two projects' realized and generic ranks for every
+finite graph and every dimension. It uses Bryan's Lean 4.34.0-rc2 environment
+and compiles the same `BarJoint.lean` source used by the main Lean 4.29 proof.
+The interfaces and precise scope are documented in
 [`docs/INTEROPERABILITY.md`](docs/INTEROPERABILITY.md).
 
 ## Comparator surface

@@ -1,0 +1,9 @@
+import RB31BryanInterop
+
+#check RB31E2E.BryanInterop.rigidityRank_eq_finrank_range
+#check RB31E2E.BryanInterop.genericRigidityRank_eq_genericRank
+#check RB31E2E.BryanInterop.isGenericallyRigidInDimension_iff_genericRank_eq_complete
+
+#print axioms RB31E2E.BryanInterop.rigidityRank_eq_finrank_range
+#print axioms RB31E2E.BryanInterop.genericRigidityRank_eq_genericRank
+#print axioms RB31E2E.BryanInterop.isGenericallyRigidInDimension_iff_genericRank_eq_complete
