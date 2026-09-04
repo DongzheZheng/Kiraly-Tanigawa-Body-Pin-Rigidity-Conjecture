@@ -1,4 +1,9 @@
-import Mathlib
+import Mathlib.Combinatorics.SimpleGraph.Finite
+import Mathlib.Data.Nat.Find
+import Mathlib.Data.Real.Basic
+import Mathlib.LinearAlgebra.Dimension.Constructions
+import Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
+import Mathlib.Tactic.Ring
 
 /-!
 # Three-dimensional body--pin rigidity: statement surface
