@@ -86,7 +86,7 @@ theorem incidenceLocalizedSelectedNullIdealHeight_ge_selectedCard_of_primewiseHe
       (survivingSelectedFunctionFieldBudget_of_primewiseHeight
         root src dst active angularChart selected distinctChart hHeight)
 
-/-- The exact selected-null localized height required by the incidence
+/-- The selected-null localized lower-height bound required by the incidence
 transfer follows directly from grounded PF semismallness.  No
 `SurvivingSelectedFunctionFieldBudget`, selected-null height, or generic
 fibre identity is a premise. -/
