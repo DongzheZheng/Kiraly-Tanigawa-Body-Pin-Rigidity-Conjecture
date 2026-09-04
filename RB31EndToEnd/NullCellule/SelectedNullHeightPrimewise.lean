@@ -123,11 +123,11 @@ theorem incidenceLocalizedSelectedNullIdealHeight_ge_selectedCard_of_groundedPF
   intro P hP _hAngular hDistinct
   letI : P.IsPrime := hP.1.1
   have hF :=
-    WittShearDistinctPrime.coefficientMinimalPrime_height_ge_edgeCard_of_groundedPF
+    WittShearDistinctPrime.coefficientMinimalPrime_height_eq_edgeCard_of_groundedPF
       root src dst active hLoop F hRepresented distinctChart P hP hDistinct hPF
   rw [SparseNullIncidence.card_selectedSkeletonOccurrences
     src dst active hLoop F hRepresented]
-  exact hF
+  exact hF.symm.le
 
 end
 

@@ -446,9 +446,9 @@ theorem exists_splitMinimalPrime_with_injective_placement
     Psplit.height = Ps.height := esplit.height_map Ps
     _ = P.height := e.symm.height_map P
 
-/-- Direct height of a surviving minimal selected-null component from the
-grounded PF function-field theorem.  The terminal full-twist function-field
-budget does not occur in the statement. -/
+/-- Lower height bound for a surviving minimal selected-null component from
+the grounded PF function-field theorem.  The terminal full-twist
+function-field budget does not occur in the statement. -/
 theorem coefficientMinimalPrime_height_ge_edgeCard_of_groundedPF
     {V : Type u} {E : Type v}
     [Fintype V] [DecidableEq V] [DecidableEq E]
@@ -487,6 +487,44 @@ theorem coefficientMinimalPrime_height_ge_edgeCard_of_groundedPF
       root src dst active hLoop F hRepresented Psplit hPsplit hinjective hPF
   rw [← hheight]
   exact hsplit
+
+/-- A surviving minimal selected-null component has exactly one unit of
+height per selected skeleton edge. -/
+theorem coefficientMinimalPrime_height_eq_edgeCard_of_groundedPF
+    {V : Type u} {E : Type v}
+    [Fintype V] [DecidableEq V] [DecidableEq E]
+    (root : V) (src dst : E → V) (active : Finset E)
+    (hLoop : ∀ e ∈ active, src e ≠ dst e)
+    (F : SimpleEdgeSet V)
+    (hRepresented : ∀ f ∈ F, ∃ e : active,
+      SparseNullIncidence.activeEdge src dst active hLoop e = f)
+    (chart : DistinctnessChart V)
+    (P : Ideal (TwistCoefficientRing root)) [P.IsPrime]
+    (hP : P ∈ (coefficientSelectedNullIdeal root src dst active
+      (SparseNullIncidence.selectedSkeletonOccurrences
+        src dst active hLoop F hRepresented)).minimalPrimes)
+    (hden : coefficientDistinctnessDenominator root chart ∉ P)
+    (hPF : ∀ {K : Type u} [Field K] [Algebra ℚ K]
+      (a : V → Fin 3 → K),
+      a root = 0 →
+      Function.Injective a →
+      IntermediateField.adjoin ℚ
+          (Set.range (fun x : V × Fin 3 ↦ a x.1 x.2)) = ⊤ →
+      DirectionStress.directionStressDim F a +
+          (Algebra.trdeg ℚ K).toNat ≤
+        Nat.card (SpatialVariable root)) :
+    P.height = (F.card : ℕ∞) := by
+  have hupper :=
+    coefficientMinimalPrime_height_le_selectedCard
+      root src dst active
+        (SparseNullIncidence.selectedSkeletonOccurrences
+          src dst active hLoop F hRepresented)
+        P hP
+  rw [SparseNullIncidence.card_selectedSkeletonOccurrences
+    src dst active hLoop F hRepresented] at hupper
+  exact le_antisymm hupper
+    (coefficientMinimalPrime_height_ge_edgeCard_of_groundedPF
+      root src dst active hLoop F hRepresented chart P hP hden hPF)
 
 end
 

@@ -1,5 +1,6 @@
 import RB31EndToEnd.Algebra.PolynomialPrimeTrdegHeight
 import RB31EndToEnd.Incidence.PinOuterFullProvenanceHeightTransfer
+import Mathlib.RingTheory.Ideal.KrullsHeightTheorem
 import Mathlib.RingTheory.Ideal.MinimalPrime.Localization
 
 /-!
@@ -53,6 +54,32 @@ def coefficientSelectedNullIdeal
     (selected : Finset active) : Ideal (TwistCoefficientRing root) :=
   Ideal.span (Set.range (fun e : SelectedOccurrence active selected ↦
     coefficientNullEquation root src dst e.1.1))
+
+/-- Generalized Krull height theorem for a minimal prime of the literal
+selected-null ideal. -/
+theorem coefficientMinimalPrime_height_le_selectedCard
+    {V E : Type*} [Fintype V] [DecidableEq V] [DecidableEq E]
+    (root : V) (src dst : E → V) (active : Finset E)
+    (selected : Finset active)
+    (P : Ideal (TwistCoefficientRing root))
+    (hP : P ∈ (coefficientSelectedNullIdeal
+      root src dst active selected).minimalPrimes) :
+    P.height ≤ (selected.card : ℕ∞) := by
+  classical
+  let g : SelectedOccurrence active selected →
+      TwistCoefficientRing root :=
+    fun e ↦ coefficientNullEquation root src dst e.1.1
+  have hPspan :
+      P ∈ (Ideal.span (Set.range g)).minimalPrimes := by
+    simpa only [coefficientSelectedNullIdeal, g] using hP
+  have hKrull :
+      P.height ≤ ((Set.range g).ncard : ℕ∞) :=
+    Ideal.height_le_card_of_mem_minimalPrimes_span
+      (Set.finite_range g) hPspan
+  have hncard : (Set.range g).ncard ≤ selected.card := by
+    rw [← Set.image_univ]
+    simpa using Set.ncard_image_le (f := g) (s := Set.univ)
+  exact hKrull.trans (by exact_mod_cast hncard)
 
 /-- The same ideal after the active-angular localization. -/
 def angularSelectedNullIdeal

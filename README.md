@@ -38,9 +38,10 @@ defined as the maximum rank attained by the real rigidity matrix.
 ## Scope of the formalization
 
 Both implications are proved. The sufficiency proof includes the collinearity-
-flag semismallness theorem, the prime-height argument for the null-difference
-ideals, and the exclusion of exceptional pin parameters. None of these results
-is supplied as an assumption to the root theorem.
+flag semismallness theorem, the exact primewise height formula for the minimal
+primes of the rational selected null-difference ideals that survive a complete
+pairwise-distinctness chart, and the exclusion of exceptional pin parameters.
+None of these results is supplied as an assumption to the root theorem.
 
 The repository contains exactly the transitive source dependency closure of the
 end-to-end theorem, together with a small trust audit. Experimental files and
